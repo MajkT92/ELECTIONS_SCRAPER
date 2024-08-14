@@ -38,7 +38,7 @@ Samotný skript se spouští přes příkazový řádek s 2 povinnými argumenty
 Po dokončení se vyexpotovaná data stáhnou a uloží se do souboru .csv
 
 
-**PRŮBĚH SCRIPTU**
+**PRŮBĚH SKRIPTU**
 
     Začínám stahovat data.
     Ještě chvíli strpení....
