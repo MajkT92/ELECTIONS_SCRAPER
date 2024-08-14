@@ -48,4 +48,4 @@ Po dokončení se vyexportovaná data stáhnou a uloží se do souboru .csv
  
 Pokud využíváte novější verze Microsoft Excel, případně Microsoft 360
 , je nutné soubor otevřít jinou cestou: Nejprve spusťte samotnou aplikaci Excel a otevřete prázdný sešit. 
-V sekci data zvolte načíst Data z Text/CSV. následně zvolte soubor vysledky_hlasovani_rychnov.csv , kde se Vám zobrazí další okno,poté zvolte nahrát.
+V sekci data zvolte načíst Data z Text/CSV, následně zvolte soubor vysledky_hlasovani_rychnov.csv, kde se Vám zobrazí další okno, poté zvolte nahrát.
