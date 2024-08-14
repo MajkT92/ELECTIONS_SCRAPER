@@ -32,7 +32,13 @@ Po dokončení se vyexpotovaná data stáhnou a uloží se do souboru .csv
 1. argument: https://volby.cz/pls/ps2017nss/
 2. argument: "vysledky_hlasovani_rychnov.csv"
 
-![img.png](image/img.png)
+    ![img.png](image/img.png)
+
+**PRŮBĚH SCRIPTU**
+
+    Začínám stahovat data.
+    Ještě chvíli strpení....
+    Data byla stažena do souboru: vysledky_hlasovani_rychnov.csv
 
 **UPOZORNĚNÍ!**
  
