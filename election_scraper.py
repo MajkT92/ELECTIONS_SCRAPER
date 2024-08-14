@@ -63,3 +63,20 @@ def get_result_links(start_url, base_url):
             result_links.append((obec_nazev, base_url + link['href'], code))
 
     return result_links
+
+def fetch_all_data(result_links):
+    print("Začínám stahovat data.")
+    all_data = []
+
+    # Set pro uchování již zpracovaných odkazů
+    visited_links = set()
+    print('Ještě chvíli strpení....')
+    for obec, result_link, code in result_links:
+
+        # Duplicitní názvy obcí a obce začínací "X"
+        if obec != 'X' and result_link not in visited_links:
+            data = fetch_data_from_result_page(result_link, obec, code)
+            all_data.append(data)
+            visited_links.add(result_link)
+
+    return all_data
