@@ -13,7 +13,7 @@ Skript umí extrahovat data z webové strany z výsledku parlamentních voleb pr
 
 **INSTALACE KNIHOVEN**
 
- Pro správnou funkčnost celého skriptu je nutné instalaci knihoven. V příloženom soubour **requirements.txt** Doporučuji použít nové virtuální prostřední a nainstalovanými knihovnami opětovně spustit
+ Pro správnou funkčnost celého skriptu je nutné instalaci knihoven. V příloženém souboru **requirements.txt** doporučuji použít nové virtuální prostředí a nainstalovanými knihovnami opětovně spustit.
  
     pip3 --version                          #ověření verze manažera
     pip3 install -r requirements.txt        #instalace knihoven
@@ -35,7 +35,7 @@ Samotný skript se spouští přes příkazový řádek s 2 povinnými argumenty
 
         python election_scraper.py "https://volby.cz/pls/ps2017nss/" "vysledky_hlasovani_rychnov.csv"
 
-Po dokončení se vyexpotovaná data stáhnou a uloží se do souboru .csv
+Po dokončení se vyexportovaná data stáhnou a uloží se do souboru .csv
 
 
 **PRŮBĚH SKRIPTU**
@@ -47,5 +47,5 @@ Po dokončení se vyexpotovaná data stáhnou a uloží se do souboru .csv
 **UPOZORNĚNÍ!**
  
 Pokud využíváte novější verze Microsoft Excel, případně Microsoft 360
-, je nutné soubor otevřít jinou cestou. Nejprve spusťte samotnou aplikaci Excel a otevřete prázdný sešit. 
-V sekci data zvolte Načíst Data z Text/CSV. Zvolte soubor vysledky_hlasovani_rychnov.csv. Zobrazí se Vám další okno a zvolte nahrát.
+, je nutné soubor otevřít jinou cestou: Nejprve spusťte samotnou aplikaci Excel a otevřete prázdný sešit. 
+V sekci data zvolte načíst Data z Text/CSV. následně zvolte soubor vysledky_hlasovani_rychnov.csv , kde se Vám zobrazí další okno,poté zvolte nahrát.
