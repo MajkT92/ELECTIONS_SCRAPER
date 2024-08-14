@@ -18,7 +18,7 @@ Skript umí extrahovat data z webové strany z výsledku parlamentních voleb pr
     pip3 --version                          #ověření verze manažera
     pip3 install -r requirements.txt        #instalace knihoven
 
-**UKÁZKA PROJEKTU**
+****UKÁZKA PROJEKTU****
 
 Výsledky hlasování pro okres Rychnov nad Kněžnou 
 
@@ -29,7 +29,7 @@ Výsledky hlasování pro okres Rychnov nad Kněžnou
 ![img.png](image/img.png)
 
 
-**SPOUŠTĚNÍ PROJEKTU**
+****SPOUŠTĚNÍ PROJEKTU****
 
 Samotný skript se spouští přes příkazový řádek s 2 povinnými argumenty
 
