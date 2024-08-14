@@ -42,7 +42,7 @@ Po dokončení se vyexpotovaná data stáhnou a uloží se do souboru .csv
 
     Začínám stahovat data.
     Ještě chvíli strpení....
-    Data byla stažena do souboru: vysledky_hlasovani_rychnov.csv
+    Data byla stažena a uložena do souboru: vysledky_hlasovani_rychnov.csv
 
 **UPOZORNĚNÍ!**
  
