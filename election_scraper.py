@@ -80,3 +80,30 @@ def fetch_all_data(result_links):
             visited_links.add(result_link)
 
     return all_data
+
+def write_to_csv(all_data, filename):
+    # Získáme všechny názvy politických stran
+    all_strany = set()
+    for data in all_data:
+        all_strany.update(data.keys())
+    all_strany.discard('code')
+    all_strany.discard('location')
+    all_strany.discard('registered')
+    all_strany.discard('enveloped')
+    all_strany.discard('valid')
+    all_strany = sorted(all_strany)
+
+    with open(filename, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        # Hlavička
+        header = ['code', 'location', 'registered', 'enveloped', 'valid'] + all_strany
+        writer.writerow(header)
+
+        # Samotné data
+        for data in all_data:
+            row = [data.get('code'), data.get('location'), data.get('registered', ''),
+                   data.get('enveloped', ''), data.get('valid', '')] + [data.get(strana, '')
+                    for strana in all_strany]
+            writer.writerow(row)
+
+    print(f"Data byla stažena do souboru: {filename}")
