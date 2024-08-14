@@ -106,7 +106,7 @@ def write_to_csv(all_data, filename):
                     for strana in all_strany]
             writer.writerow(row)
 
-    print(f"Data byla stažena do souboru: {filename}")
+    print(f"Data byla stažena a uložena do souboru: {filename}")
 
 def election_scraper(base_url, output_file):
     start_url = f"{base_url}/ps32?xjazyk=CZ&xkraj=8&xnumnuts=5204"
