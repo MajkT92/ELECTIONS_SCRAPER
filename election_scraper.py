@@ -113,3 +113,12 @@ def election_scraper(base_url, output_file):
     result_links = get_result_links(start_url, base_url)
     all_data = fetch_all_data(result_links)
     write_to_csv(all_data, output_file)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Fetch and save election results.')
+    parser.add_argument('base_url', type=str, help='Base URL for the election results')
+    parser.add_argument('output_file', type=str, help='Output CSV file name')
+
+    args = parser.parse_args()
+
+    election_scraper(args.base_url, args.output_file)
