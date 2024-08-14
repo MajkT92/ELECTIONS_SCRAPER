@@ -107,3 +107,9 @@ def write_to_csv(all_data, filename):
             writer.writerow(row)
 
     print(f"Data byla stažena do souboru: {filename}")
+
+def election_scraper(base_url, output_file):
+    start_url = f"{base_url}/ps32?xjazyk=CZ&xkraj=8&xnumnuts=5204"
+    result_links = get_result_links(start_url, base_url)
+    all_data = fetch_all_data(result_links)
+    write_to_csv(all_data, output_file)
