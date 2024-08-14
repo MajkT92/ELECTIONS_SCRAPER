@@ -43,3 +43,23 @@ def fetch_data_from_result_page(result_url, obec, code):
             data[nazev_strany] = platne_hlasy
 
     return data
+
+def get_result_links(start_url, base_url):
+    response = requests.get(start_url)
+
+    # Správné formátování
+    response.encoding = 'utf-8'
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    links = soup.find_all('a', href=True)
+    result_links = []
+
+    for link in links:
+        if 'ps311' in link['href']:
+            code = link['href'].split('=')[-1]
+            obec_info = link.find_next('td').get_text(strip=True)
+
+            obec_nazev = ' '.join(word for word in obec_info.split() if not word.isdigit())
+            result_links.append((obec_nazev, base_url + link['href'], code))
+
+    return result_links
