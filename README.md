@@ -18,21 +18,25 @@ Skript umí extrahovat data z webové strany z výsledku parlamentních voleb pr
     pip3 --version                          #ověření verze manažera
     pip3 install -r requirements.txt        #instalace knihoven
 
+**UKÁZKA PROJEKTU**
+
+Výsledky hlasování pro okres Rychnov nad Kněžnou 
+
+1. argument: https://volby.cz/pls/ps2017nss/
+2. argument: "vysledky_hlasovani_rychnov.csv"
+
+
+![img.png](image/img.png)
+
+
 **SPOUŠTĚNÍ PROJEKTU**
 
-Samotný skript main.py se spouští přes příkazový řádek s 2 povinnými argumenty
+Samotný skript se spouští přes příkazový řádek s 2 povinnými argumenty
 
         python election_scraper.py "https://volby.cz/pls/ps2017nss/" "vysledky_hlasovani_rychnov.csv"
 
 Po dokončení se vyexpotovaná data stáhnou a uloží se do souboru .csv
 
-
-**UKÁZKA PROJEKTU**
-
-1. argument: https://volby.cz/pls/ps2017nss/
-2. argument: "vysledky_hlasovani_rychnov.csv"
-
-    ![img.png](image/img.png)
 
 **PRŮBĚH SCRIPTU**
 
