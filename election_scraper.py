@@ -44,8 +44,8 @@ def fetch_data_from_result_page(result_url, obec, code):
 
     return data
 
-def get_result_links(start_url, base_url):
-    response = requests.get(start_url)
+def get_result_links(base_url):
+    response = requests.get(base_url)
 
     # Správné formátování
     response.encoding = 'utf-8'
@@ -109,8 +109,7 @@ def write_to_csv(all_data, filename):
     print(f"Data byla stažena a uložena do soubor: {filename}")
 
 def election_scraper(base_url, output_file):
-    start_url = f"{base_url}/ps32?xjazyk=CZ&xkraj=8&xnumnuts=5204"
-    result_links = get_result_links(start_url, base_url)
+    result_links = get_result_links(base_url)
     all_data = fetch_all_data(result_links)
     write_to_csv(all_data, output_file)
 
