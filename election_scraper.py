@@ -50,10 +50,19 @@ def get_result_links(result_link):
 
     for link in links:
         if 'ps311' in link['href']:
-            code = link['href'].split('=')[-1]
-            obec_info = link.find_next('td').get_text(strip=True)
+            #kod obce
+            code = link.get_text(strip=True)
 
-            obec_nazev = ' '.join(word for word in obec_info.split() if not word.isdigit())
+            obec_info_td_link = link.find_next('td')
+
+            #td tag / ošetření None
+            if obec_info_td_link is not None:
+                obec_info = obec_info_td_link.get_text(strip=True)
+            else:
+                obec_info = None
+
+            #ošetření v případě, že by se vyskytlo None
+            obec_nazev = ' '.join(word for word in (obec_info or '').split() if not word.isdigit())
 
             #Celý odkaz jak z ps32 tak i z ps311
             full_link = urljoin(result_link, link['href'])
