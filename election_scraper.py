@@ -1,36 +1,30 @@
-"""
-election_scraper.py: třetí projekt do Engeto Online Python Akademie
-author: Michal Toman
-email: mtoman92@gmail.com
-discord: majk923278
-"""
-
 import requests
 from bs4 import BeautifulSoup
 import csv
 import argparse
+from urllib.parse import urljoin, urlparse
 
 def fetch_data_from_result_page(result_url, obec, code):
     response = requests.get(result_url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    #Data tabulky
+    # Data tabulky
     rows = soup.find_all('tr')
     data = {'code': code, 'location': obec}
 
-    #Registrovaní voliči (registered)
+    # Registrovaní voliči (registered)
     registered = soup.find('td', headers='sa2')
     if registered:
         data['registered'] = registered.get_text(strip=True)
 
-    #Počet vydaných obálek (enveloped)
+    # Počet vydaných obálek (enveloped)
     enveloped = soup.find('td', headers='sa3')
     if enveloped:
         data['enveloped'] = enveloped.get_text(strip=True)
 
-    #Počet platných hlasů (valid)
+    # Počet platných hlasů (valid)
     valid_tag = soup.find('td', headers='sa6')
-    if (valid_tag):
+    if valid_tag:
         data['valid'] = valid_tag.get_text(strip=True)
 
     for row in rows:
@@ -44,8 +38,8 @@ def fetch_data_from_result_page(result_url, obec, code):
 
     return data
 
-def get_result_links(base_url):
-    response = requests.get(base_url)
+def get_result_links(result_link):
+    response = requests.get(result_link)
 
     # Správné formátování
     response.encoding = 'utf-8'
@@ -60,7 +54,12 @@ def get_result_links(base_url):
             obec_info = link.find_next('td').get_text(strip=True)
 
             obec_nazev = ' '.join(word for word in obec_info.split() if not word.isdigit())
-            result_links.append((obec_nazev, base_url + link['href'], code))
+
+            #Celý odkaz jak z ps32 tak i z ps311
+            full_link = urljoin(result_link, link['href'])
+
+            print(f"Found link: {full_link}")  # Ladící výpis
+            result_links.append((obec_nazev, full_link, code))
 
     return result_links
 
@@ -106,7 +105,7 @@ def write_to_csv(all_data, filename):
                     for strana in all_strany]
             writer.writerow(row)
 
-    print(f"Data byla stažena a uložena do soubor: {filename}")
+    print(f"Data byla stažena a uložena do souboru: {filename}")
 
 def election_scraper(base_url, output_file):
     result_links = get_result_links(base_url)
