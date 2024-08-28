@@ -58,7 +58,6 @@ def get_result_links(result_link):
             #Celý odkaz jak z ps32 tak i z ps311
             full_link = urljoin(result_link, link['href'])
 
-            print(f"Found link: {full_link}")  # Ladící výpis
             result_links.append((obec_nazev, full_link, code))
 
     return result_links
