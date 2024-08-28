@@ -33,7 +33,7 @@ Výsledky hlasování pro okres Rychnov nad Kněžnou
 
 Samotný skript se spouští přes příkazový řádek s 2 povinnými argumenty
 
-        python election_scraper.py "https://volby.cz/pls/ps2017nss/" "vysledky_hlasovani_rychnov.csv"
+        python election_scraper.py "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=8&xnumnuts=5204" "vysledky_hlasovani_rychnov.csv"
 
 Po dokončení se vyexportovaná data stáhnou a uloží se do souboru .csv
 
