@@ -50,10 +50,11 @@ def get_result_links(result_link):
             city_info_td_link = link.find_next('td')
 
             #td tag / ošetření None
-            if city_info_td_link is not None:
-                city_info = city_info_td_link.get_text(strip=True)
+            city_info = None
+            if city_info_td_link:
+                city_info = (
+            city_info_td_link.get_text(strip=True))
             else:
-                city_info = None
 
             #ošetření v případě, že by se vyskytlo None
             city_name = (' '.join
@@ -74,7 +75,6 @@ def fetch_all_data(result_links):
 
     # Set pro uchování již zpracovaných odkazů
     visited_links = set()
-    print('Ještě chvíli strpení....')
     for city, result_link, code in result_links:
 
         # Duplicitní názvy obcí a obce začínací "X"
