@@ -1,43 +1,37 @@
-import requests
-from bs4 import BeautifulSoup
 import csv
 import argparse
-from urllib.parse import urljoin, urlparse
-
+from urllib.parse import urljoin
+import requests
+from bs4 import BeautifulSoup
 def fetch_data_from_result_page(result_url, obec, code):
     response = requests.get(result_url)
     soup = BeautifulSoup(response.text, 'html.parser')
-
     # Data tabulky
     rows = soup.find_all('tr')
     data = {'code': code, 'location': obec}
-
     # Registrovaní voliči (registered)
     registered = soup.find('td', headers='sa2')
     if registered:
         data['registered'] = registered.get_text(strip=True)
-
     # Počet vydaných obálek (enveloped)
     enveloped = soup.find('td', headers='sa3')
     if enveloped:
         data['enveloped'] = enveloped.get_text(strip=True)
-
     # Počet platných hlasů (valid)
     valid_tag = soup.find('td', headers='sa6')
     if valid_tag:
         data['valid'] = valid_tag.get_text(strip=True)
 
     for row in rows:
-        strana_tag = row.find('td', class_='overflow_name')
+        vote_tag = row.find('td', class_='overflow_name')
         hlasy_tag = row.find_all('td', class_='cislo')
 
-        if strana_tag and len(hlasy_tag) > 0:
-            nazev_strany = strana_tag.get_text(strip=True)
-            platne_hlasy = hlasy_tag[-1].get_text(strip=True)
-            data[nazev_strany] = platne_hlasy
+        if vote_tag and len(vote_tag) > 0:
+            policital_name = vote_tag.get_text(strip=True)
+            valid_vote = hlasy_tag[-1].get_text(strip=True)
+            data[policital_name] = valid_vote
 
     return data
-
 def get_result_links(result_link):
     response = requests.get(result_link)
 
@@ -53,21 +47,24 @@ def get_result_links(result_link):
             #kod obce
             code = link.get_text(strip=True)
 
-            obec_info_td_link = link.find_next('td')
+            city_info_td_link = link.find_next('td')
 
             #td tag / ošetření None
-            if obec_info_td_link is not None:
-                obec_info = obec_info_td_link.get_text(strip=True)
+            if city_info_td_link is not None:
+                city_info = city_info_td_link.get_text(strip=True)
             else:
-                obec_info = None
+                city_info = None
 
             #ošetření v případě, že by se vyskytlo None
-            obec_nazev = ' '.join(word for word in (obec_info or '').split() if not word.isdigit())
+            city_name = (' '.join
+                          (word for word in (city_info or '').split()
+                           if not word.isdigit())
+            )
 
             #Celý odkaz jak z ps32 tak i z ps311
             full_link = urljoin(result_link, link['href'])
 
-            result_links.append((obec_nazev, full_link, code))
+            result_links.append((city_name, full_link, code))
 
     return result_links
 
@@ -78,11 +75,11 @@ def fetch_all_data(result_links):
     # Set pro uchování již zpracovaných odkazů
     visited_links = set()
     print('Ještě chvíli strpení....')
-    for obec, result_link, code in result_links:
+    for city, result_link, code in result_links:
 
         # Duplicitní názvy obcí a obce začínací "X"
-        if obec != 'X' and result_link not in visited_links:
-            data = fetch_data_from_result_page(result_link, obec, code)
+        if city != 'X' and result_link not in visited_links:
+            data = fetch_data_from_result_page(result_link, city, code)
             all_data.append(data)
             visited_links.add(result_link)
 
@@ -90,27 +87,27 @@ def fetch_all_data(result_links):
 
 def write_to_csv(all_data, filename):
     # Získáme všechny názvy politických stran
-    all_strany = set()
+    all_of_political = set()
     for data in all_data:
-        all_strany.update(data.keys())
-    all_strany.discard('code')
-    all_strany.discard('location')
-    all_strany.discard('registered')
-    all_strany.discard('enveloped')
-    all_strany.discard('valid')
-    all_strany = sorted(all_strany)
+        all_of_political.update(data.keys())
+    all_of_political.discard('code')
+    all_of_political.discard('location')
+    all_of_political.discard('registered')
+    all_of_political.discard('enveloped')
+    all_of_political.discard('valid')
+    all_of_political = sorted(all_of_political)
 
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         # Hlavička
-        header = ['code', 'location', 'registered', 'enveloped', 'valid'] + all_strany
+        header = ['code', 'location', 'registered', 'enveloped', 'valid'] + all_of_political
         writer.writerow(header)
 
         # Samotné data
         for data in all_data:
             row = [data.get('code'), data.get('location'), data.get('registered', ''),
                    data.get('enveloped', ''), data.get('valid', '')] + [data.get(strana, '')
-                    for strana in all_strany]
+                    for strana in all_of_political]
             writer.writerow(row)
 
     print(f"Data byla stažena a uložena do souboru: {filename}")
