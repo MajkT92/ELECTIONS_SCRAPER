@@ -55,24 +55,22 @@ def get_result_links(result_link):
                 city_info = (
             city_info_td_link.get_text(strip=True))
             else:
+                None
 
-            #ošetření v případě, že by se vyskytlo None
-            city_name = (' '.join
-                          (word for word in (city_info or '').split()
-                           if not word.isdigit())
+            city_name = ' '.join(word
+                for word in (city_info or '').split()
+                    if not word.isdigit()
             )
 
             #Celý odkaz jak z ps32 tak i z ps311
             full_link = urljoin(result_link, link['href'])
 
             result_links.append((city_name, full_link, code))
-
     return result_links
 
 def fetch_all_data(result_links):
     print("Začínám stahovat data.")
     all_data = []
-
     # Set pro uchování již zpracovaných odkazů
     visited_links = set()
     for city, result_link, code in result_links:
@@ -84,34 +82,24 @@ def fetch_all_data(result_links):
             visited_links.add(result_link)
 
     return all_data
-
 def write_to_csv(all_data, filename):
     # Získáme všechny názvy politických stran
     all_of_political = set()
     for data in all_data:
         all_of_political.update(data.keys())
-    all_of_political.discard('code')
-    all_of_political.discard('location')
-    all_of_political.discard('registered')
-    all_of_political.discard('enveloped')
-    all_of_political.discard('valid')
-    all_of_political = sorted(all_of_political)
 
-    with open(filename, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        # Hlavička
-        header = ['code', 'location', 'registered', 'enveloped', 'valid'] + all_of_political
-        writer.writerow(header)
+    party_filter = {'code', 'location', 'registered', "enveloped", 'valid'}
+    all_of_political -= party_filter
 
+    with open(filename, mode='w', newline='', encoding='utf-8') as csvfile:
+        fieldnames = ['code', 'location', 'registered', 'enveloped', 'valid'] + list(all_of_political)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
         # Samotné data
         for data in all_data:
-            row = [data.get('code'), data.get('location'), data.get('registered', ''),
-                   data.get('enveloped', ''), data.get('valid', '')] + [data.get(strana, '')
-                    for strana in all_of_political]
+            row = {key: data.get(key, '') for key in fieldnames}
             writer.writerow(row)
-
     print(f"Data byla stažena a uložena do souboru: {filename}")
-
 def election_scraper(base_url, output_file):
     result_links = get_result_links(base_url)
     all_data = fetch_all_data(result_links)
